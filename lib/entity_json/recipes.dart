@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'entity_json/recipes_request.dart';
+import 'recipes_request.dart';
 
 class Recipes extends StatefulWidget{
 

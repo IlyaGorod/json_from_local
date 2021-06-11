@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 class RecipesList{
@@ -8,10 +9,14 @@ class RecipesList{
 
   factory RecipesList.fromJson(Map<String, dynamic> json){
 
-    var recipesJson = json[''] as List;
+    var recipesJson = json['array'] as List;
 
     List<RecipesEntity> recipesList = recipesJson.map((i) =>
         RecipesEntity.fromJson(i)).toList();
+
+    recipesList.sort((a, b) {
+      return a.id.compareTo(b.id.toLowerCase());
+    });
 
     return RecipesList(
        recipes: recipesList,
@@ -38,12 +43,13 @@ class RecipesEntity {
 }
 
 Future <RecipesList> getRecipesList() async {
-  const url = 'https://github.com/ababicheva/FlutterInternshipTestTask/blob/main/recipes.json';
-  final response = await http.get(Uri.parse(url));
+  //const url = 'https://github.com/ababicheva/FlutterInternshipTestTask/blob/main/recipes.json';
+  //final response = await http.get(Uri.parse(url));
+  final response = await rootBundle.loadString('assets/recipes.json');
 
-  if(response.statusCode == 200 ) {
-    return RecipesList.fromJson(json.decode(response.body));
-  }else {
-    throw Exception('Failed to load recipes');
-  }
+  //if(response.statusCode == 200 ) {
+    return RecipesList.fromJson(json.decode(response));
+  //}else {
+  //  throw Exception('Failed to load recipes');
+  //}
 }
